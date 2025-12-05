@@ -43,7 +43,7 @@ firebase-debug.log
 firestore-debug.log
 
 # Helpful files folder (not for production)
-helpful_files
+helpful
 
 # OS
 Thumbs.db
