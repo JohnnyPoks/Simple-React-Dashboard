@@ -42,8 +42,9 @@ build
 firebase-debug.log
 firestore-debug.log
 
-# Helpful files folder (not for production)
+# Helpful files & folder (not for production)
 helpful
+PROJECT_SUMMARY.md
 
 # OS
 Thumbs.db

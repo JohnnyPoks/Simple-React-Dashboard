@@ -4,7 +4,7 @@ A fully responsive, production-ready React dashboard built with TypeScript, Redu
 
 ## 🚀 Live Demo
 
-**[View Live Demo](https://simple-react-dashboard.web.app)** _(Replace with your actual Firebase URL)_
+**[View Live Demo](https://simple-react-dashboard.web.app)**
 
 ## ✨ Features
 
