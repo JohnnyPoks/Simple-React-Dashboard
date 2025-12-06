@@ -1,141 +1,170 @@
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../store/selectors';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { Briefcase, FileText, CheckCircle, Clock } from 'lucide-react';
 
 const Profile = () => {
   const user = useSelector(selectCurrentUser);
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-        <p className="text-gray-600 mt-1">Manage your account settings and preferences</p>
+        <h1 className="text-2xl font-bold text-foreground">Profile</h1>
+        <p className="text-muted-foreground mt-1">Manage your account settings and preferences</p>
       </div>
 
-      {/* Profile Card */}
+      {/* Profile Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Info Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="text-center">
-            <img
-              src={user?.avatar || 'https://ui-avatars.com/api/?name=User&background=4f46e5&color=fff'}
-              alt={user?.name}
-              className="h-24 w-24 rounded-full mx-auto border-4 border-indigo-500 mb-4"
-            />
-            <h2 className="text-xl font-bold text-gray-900">{user?.name}</h2>
-            <p className="text-gray-600">{user?.role}</p>
-            <p className="text-sm text-gray-500 mt-2">{user?.email}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <Avatar className="h-24 w-24 mx-auto border-4 border-primary mb-4">
+                <AvatarImage src={user?.avatar} alt={user?.name} />
+                <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
+                  {user?.name ? getInitials(user.name) : 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <h2 className="text-xl font-bold text-foreground">{user?.name || 'User'}</h2>
+              <Badge variant="secondary" className="mt-1">{user?.role || 'Member'}</Badge>
+              <p className="text-sm text-muted-foreground mt-2">{user?.email}</p>
 
-            <div className="mt-6 space-y-2">
-              <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                Edit Profile
-              </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                Change Password
-              </button>
+              <Separator className="my-6" />
+
+              <div className="space-y-3">
+                <Button className="w-full">Edit Profile</Button>
+                <Button variant="outline" className="w-full">Change Password</Button>
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Profile Details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Personal Information */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={user?.name || ''}
-                  disabled
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
-                />
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Personal Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    value={user?.name || ''}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={user?.email || ''}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="role">Role</Label>
+                  <Input
+                    id="role"
+                    value={user?.role || ''}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="userId">User ID</Label>
+                  <Input
+                    id="userId"
+                    value={user?.id || ''}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={user?.email || ''}
-                  disabled
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Role
-                </label>
-                <input
-                  type="text"
-                  value={user?.role || ''}
-                  disabled
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  User ID
-                </label>
-                <input
-                  type="text"
-                  value={user?.id || ''}
-                  disabled
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
-                />
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Account Statistics */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Statistics</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-indigo-50 rounded-lg">
-                <p className="text-2xl font-bold text-indigo-600">127</p>
-                <p className="text-sm text-gray-600 mt-1">Projects</p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Account Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Card className="bg-primary/5 border-0">
+                  <CardContent className="p-4 text-center">
+                    <Briefcase className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-primary">127</p>
+                    <p className="text-sm text-muted-foreground">Projects</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-green-50 border-0">
+                  <CardContent className="p-4 text-center">
+                    <FileText className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-green-600">84</p>
+                    <p className="text-sm text-muted-foreground">Tasks</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-blue-50 border-0">
+                  <CardContent className="p-4 text-center">
+                    <CheckCircle className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-blue-600">45</p>
+                    <p className="text-sm text-muted-foreground">Completed</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-orange-50 border-0">
+                  <CardContent className="p-4 text-center">
+                    <Clock className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-orange-600">12</p>
+                    <p className="text-sm text-muted-foreground">Pending</p>
+                  </CardContent>
+                </Card>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <p className="text-2xl font-bold text-green-600">89%</p>
-                <p className="text-sm text-gray-600 mt-1">Completion</p>
-              </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <p className="text-2xl font-bold text-purple-600">42</p>
-                <p className="text-sm text-gray-600 mt-1">Reviews</p>
-              </div>
-              <div className="text-center p-4 bg-orange-50 rounded-lg">
-                <p className="text-2xl font-bold text-orange-600">15</p>
-                <p className="text-sm text-gray-600 mt-1">Awards</p>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-            <div className="space-y-4">
-              {[
-                { action: 'Updated profile information', time: '2 hours ago', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
-                { action: 'Completed project milestone', time: '5 hours ago', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
-                { action: 'Uploaded new documents', time: '1 day ago', icon: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12' },
-              ].map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                  <div className="bg-indigo-100 p-2 rounded-lg">
-                    <svg className="h-5 w-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={activity.icon} />
-                    </svg>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  { action: 'Updated profile picture', time: '2 hours ago' },
+                  { action: 'Completed task "Dashboard Design"', time: '5 hours ago' },
+                  { action: 'Added new team member', time: '1 day ago' },
+                  { action: 'Created new project "Mobile App"', time: '2 days ago' },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
+                    <span className="text-sm text-foreground">{item.action}</span>
+                    <span className="text-xs text-muted-foreground">{item.time}</span>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
