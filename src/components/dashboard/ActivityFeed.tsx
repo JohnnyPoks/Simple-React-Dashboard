@@ -1,4 +1,3 @@
-import type { ActivityItem } from '../../store/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -12,8 +11,17 @@ import {
 } from '@/components/ui/table';
 import { Trash2 } from 'lucide-react';
 
+// Legacy activity item interface for development activity display
+interface LegacyActivityItem {
+  id: string;
+  user: string;
+  avatar?: string;
+  commit: string;
+  date: string;
+}
+
 interface ActivityFeedProps {
-  activities: ActivityItem[];
+  activities: LegacyActivityItem[];
 }
 
 const ActivityFeed: React.FC<ActivityFeedProps> = ({ activities }) => {

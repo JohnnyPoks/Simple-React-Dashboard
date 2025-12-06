@@ -8,7 +8,7 @@ const initialState: types.UserState = {
 
 export const userReducer = (
   state = initialState,
-  action: any
+  action: { type: string; payload?: unknown }
 ): types.UserState => {
   switch (action.type) {
     case types.FETCH_USER_PROFILE_REQUEST:
@@ -21,7 +21,7 @@ export const userReducer = (
     case types.FETCH_USER_PROFILE_SUCCESS:
       return {
         ...state,
-        profile: action.payload,
+        profile: action.payload as types.User,
         loading: false,
         error: null,
       };
@@ -30,7 +30,7 @@ export const userReducer = (
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload as string,
       };
 
     default:

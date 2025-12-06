@@ -1,23 +1,42 @@
-# 📊 React Dashboard with Redux-Saga
+# 🤖 Trading Bot Dashboard
 
-A fully responsive, production-ready React dashboard built with TypeScript, Redux-Saga, and Tailwind CSS. This project demonstrates modern React development practices with state management, authentication, and dynamic data visualization.
+A fully responsive, production-ready React trading bot dashboard built with TypeScript, Redux-Saga, Tailwind CSS, and shadcn/ui. This project demonstrates modern React development practices with state management, real-time trading signals, and comprehensive analytics.
 
 ## 🚀 Live Demo
 
 **[View Live Demo](https://simple-react-dashboard.web.app)**
 
+### Demo Credentials
+- **Email:** admin@dashboard.com
+- **Password:** admin123
+
 ## ✨ Features
 
+### Core Features
 - ✅ **Authentication System** - JWT-based login with protected routes
 - ✅ **Redux + Redux-Saga** - Advanced state management with side effects
 - ✅ **Fully Responsive** - Mobile, tablet, and desktop optimized
-- ✅ **Dynamic Data** - Real-time data fetching with loading states
-- ✅ **Interactive Charts** - Line charts, pie charts, and donut charts using Recharts
-- ✅ **Modern UI** - Clean, professional design with Tailwind CSS
+- ✅ **Dark/Light Mode** - Theme toggle with localStorage persistence
 - ✅ **TypeScript** - Type-safe code throughout the application
-- ✅ **Multiple Pages** - Dashboard, Profile, and placeholder pages
-- ✅ **Activity Feed** - Track development activities and changes
-- ✅ **Error Handling** - Graceful error states and loading indicators
+
+### Trading Features
+- 🤖 **Bot Status Control** - Start/Stop trading bot with real-time status
+- 📊 **Trading Signals** - Real-time signals with confidence scores
+- 📈 **Trade History** - Complete trade history with P&L tracking
+- 💼 **Account Management** - Multiple broker account support
+- 📉 **Analytics Dashboard** - Comprehensive performance metrics
+- 🔔 **Toast Notifications** - Real-time alerts for trades and signals
+
+### UI/UX Features
+- 📊 **Interactive Charts** - Profit curves, win rate radials, asset performance
+- 📋 **Advanced Data Tables** - Pagination, sorting, column visibility, search
+- 🎨 **Modern UI** - Clean, professional design with shadcn/ui
+- 🎭 **Glass-morphism Design** - Modern glass effects with animated gradient backgrounds
+- 💬 **Live Chat Modal** - Real-time chat with minimize/expand functionality
+- 📱 **Responsive Layout** - Optimized for all screen sizes
+- ⚙️ **Comprehensive Settings** - Bot configuration, notifications, display preferences
+- 👤 **Profile Management** - Edit profile info with password change functionality
+- ❓ **Help Center** - FAQ, keyboard shortcuts, documentation
 
 ## 🛠️ Tech Stack
 
@@ -27,12 +46,20 @@ A fully responsive, production-ready React dashboard built with TypeScript, Redu
 - **Redux** - State management
 - **Redux-Saga** - Side effect management
 - **React Router v6** - Client-side routing
-- **Recharts** - Data visualization
+
+### UI Components
+- **shadcn/ui** - High-quality component library
+- **Radix UI** - Accessible primitives
 - **Tailwind CSS 4** - Utility-first styling
+- **Lucide Icons** - Beautiful icons
+
+### Data & Charts
+- **Recharts** - Data visualization
+- **TanStack Table** - Advanced data tables with sorting, filtering, pagination
+- **Sonner** - Toast notifications
 
 ### Build Tools
-- **Vite** - Fast build tool and dev server
-- **SWC** - Fast TypeScript/JavaScript compiler
+- **Vite 7.2** - Fast build tool and dev server
 - **ESLint** - Code linting
 
 ### Deployment
@@ -56,189 +83,190 @@ A fully responsive, production-ready React dashboard built with TypeScript, Redu
    npm install
    ```
 
-3. **Set up environment variables** (optional)
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Start development server**
+3. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+4. **Build for production**
+   ```bash
+   npm run build
    ```
-   http://localhost:5173
-   ```
-
-## 🔐 Demo Credentials
-
-Use these credentials to log in to the dashboard:
-
-- **Email:** `admin@dashboard.com`
-- **Password:** `admin123`
-
-Alternative credentials:
-- **Email:** `demo@dashboard.com`
-- **Password:** `demo123`
 
 ## 📁 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── dashboard/           # Dashboard-specific components
-│   │   ├── ActivityFeed.tsx # Development activity table
-│   │   ├── Charts.tsx       # Line, pie, and donut charts
-│   │   └── StatCard.tsx     # Statistics cards
-│   ├── layout/              # Layout components
-│   │   ├── Header.tsx       # Top navigation bar
-│   │   └── Sidebar.tsx      # Side navigation menu
-│   └── ProtectedRoute.tsx   # Authentication guard
+│   ├── dashboard/          # Trading dashboard components
+│   │   ├── BotStatusCard.tsx
+│   │   ├── StatCard.tsx
+│   │   ├── TradingCharts.tsx
+│   │   ├── SignalsTable.tsx
+│   │   ├── TradesTable.tsx
+│   │   └── TradingActivityFeed.tsx
+│   ├── layout/             # Layout components
+│   │   └── TopNavbar.tsx
+│   ├── ui/                 # shadcn/ui components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── data-table.tsx  # Advanced DataTable with pagination
+│   │   └── ...
+│   ├── ChatModal.tsx       # Live chat with minimize/expand
+│   └── HelpModal.tsx
 ├── pages/
-│   ├── Dashboard.tsx        # Main dashboard page
-│   ├── Login.tsx            # Login page
-│   ├── Profile.tsx          # User profile page
-│   └── NotFound.tsx         # 404 page
-├── services/
-│   └── api.ts               # Mock API service layer
+│   ├── Dashboard.tsx       # Main trading dashboard
+│   ├── SignalsPage.tsx     # Trading signals management
+│   ├── TradesPage.tsx      # Trade history
+│   ├── AccountsPage.tsx    # Broker accounts management
+│   ├── SettingsPage.tsx    # Bot and app settings
+│   ├── AnalyticsPage.tsx   # Performance analytics
+│   ├── ContactPage.tsx     # Contact with live chat
+│   ├── HelpPage.tsx        # Help center
+│   ├── Login.tsx           # Authentication with glass-morphism design
+│   ├── Register.tsx        # User registration
+│   └── Profile.tsx         # User profile with edit functionality
 ├── store/
-│   ├── actions.ts           # Redux action creators
-│   ├── reducers/            # Redux reducers
-│   │   ├── authReducer.ts
-│   │   ├── dashboardReducer.ts
-│   │   ├── userReducer.ts
-│   │   └── index.ts
-│   ├── sagas/               # Redux-Saga side effects
-│   │   └── index.ts
-│   ├── selectors.ts         # Redux selectors
-│   ├── store.ts             # Redux store configuration
-│   └── types.ts             # TypeScript types
-├── App.tsx                  # Main app component with routing
-├── main.tsx                 # App entry point
-└── index.css                # Global styles
-
+│   ├── actions.ts          # Redux actions
+│   ├── reducers.ts         # Redux reducers
+│   ├── sagas.ts            # Redux-Saga effects
+│   ├── selectors.ts        # Memoized selectors
+│   └── types.ts            # TypeScript interfaces
+├── services/
+│   └── tradingApi.ts       # Trading API service
+├── utils/
+│   └── toast.ts            # Toast notification utilities
+└── App.tsx                 # Main app with routing
 ```
 
-## 🎯 Available Scripts
+## 🎯 Pages Overview
+
+### Dashboard (`/dashboard`)
+- Bot status control with start/stop toggle
+- Real-time stats: profit, win rate, trades, signals
+- Profit history chart
+- Win rate radial chart
+- Asset performance bar chart
+- Active signals table with execute/cancel actions
+- Trade history table
+- Live activity feed
+
+### Signals (`/signals`)
+- All trading signals with status
+- Execute signals manually
+- Cancel pending signals
+- Filter and search signals
+- Confidence level indicators
+
+### Trades (`/trades`)
+- Complete trade history
+- P&L tracking
+- Direction indicators (CALL/PUT)
+- Date range filtering
+- Export functionality
+
+### Accounts (`/accounts`)
+- Connected broker accounts
+- Account balance and equity
+- Connect/disconnect accounts
+- Sync account data
+- Demo/Live account badges
+
+### Settings (`/bot-settings`)
+- **Bot Settings**: Auto-trade, max trades, Martingale strategy
+- **Risk Management**: Take profit, stop loss, confidence thresholds
+- **Notifications**: Trade alerts, signal alerts, sound settings
+- **Display**: Theme, timezone, currency, chart style
+- **Security**: Password change, 2FA, API keys
+
+### Analytics (`/analytics`)
+- Equity curve chart
+- Daily P&L breakdown
+- Trade direction distribution (CALL/PUT)
+- Win/Loss ratio
+- Best trading hours
+- Asset performance comparison
+- Profit statistics
+- Risk metrics (Sharpe ratio, max drawdown, etc.)
+
+### Help (`/help`)
+- Quick start guide
+- FAQ with categories
+- Keyboard shortcuts
+- Resource links
+- Support contact
+
+### Contact (`/contact`)
+- Contact form submission
+- Live chat modal with real-time messaging
+- Minimize/expand chat functionality
+- FAQ quick links
+- Social media links
+
+### Profile (`/profile`)
+- View and edit user profile information
+- Change password with strength indicator
+- Two-factor authentication settings
+- Profile photo management
+- Email change functionality
+
+## 🎨 UI Components
+
+### Advanced DataTable
+The `DataTable` component provides:
+- Pagination with configurable page sizes (5, 10, 20, 50, 100)
+- Column visibility toggle
+- Sorting (ascending, descending, none)
+- Global search/filter
+- Row expansion
+- Row selection
+- Export functionality
+
+### Toast Notifications
+Trading-specific toasts:
+- `toast.tradeWon(asset, amount)` - Green success toast
+- `toast.tradeLost(asset, amount)` - Red error toast
+- `toast.signalReceived(asset, direction)` - Info toast
+- `toast.signalExecuted(asset)` - Success toast
+- `toast.botStarted()` - Bot running notification
+- `toast.botStopped()` - Bot stopped notification
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + D` | Toggle dark/light mode |
+| `Ctrl + B` | Toggle sidebar |
+| `Ctrl + S` | Start/Stop bot |
+| `Ctrl + R` | Refresh data |
+| `Ctrl + /` | Open help |
+| `Esc` | Close modal |
+
+## 📝 Scripts
 
 ```bash
 # Development
-npm run dev          # Start dev server (http://localhost:5173)
+npm run dev          # Start dev server
 
 # Build
 npm run build        # Build for production
+npm run preview      # Preview production build
 
-# Preview
-npm run preview      # Preview production build locally
-
-# Linting
+# Quality
 npm run lint         # Run ESLint
-
-# Deploy (Firebase)
-npm run deploy       # Build and deploy to Firebase Hosting
 ```
-
-## 🔄 State Management
-
-This project uses **Redux with Redux-Saga** for state management:
-
-### Redux Store Structure
-- **Auth State** - User authentication, login/logout
-- **Dashboard State** - Dashboard data, stats, charts
-- **User State** - User profile information
-
-### Saga Middleware
-- Handles async operations (API calls)
-- Manages side effects
-- Provides better testability
-- Example: Login saga, data fetching saga
-
-## 📊 Dashboard Features
-
-### Statistics Cards
-- New Tickets with trend indicators
-- Closed Today count
-- New Replies tracking
-- Followers count (27.3k)
-- Daily Earnings ($95)
-- Products inventory (621)
-
-### Data Visualization
-- **Line Chart** - Development activity over time
-- **Pie Charts** - Project distribution
-- **Donut Charts** - Technology stack breakdown
-
-### Activity Feed
-- Recent commits and activities
-- User avatars and timestamps
-- Action buttons for management
-
-## 🎨 Design Highlights
-
-- **Modern UI/UX** - Clean and intuitive interface
-- **Responsive Design** - Works on all screen sizes
-- **Loading States** - Smooth loading animations
-- **Error Handling** - User-friendly error messages
-- **Accessibility** - ARIA labels and keyboard navigation
-
-## 🔒 Authentication Flow
-
-1. User enters credentials on login page
-2. Redux dispatches `loginRequest` action
-3. Saga intercepts action and calls mock API
-4. On success, user data and token stored in localStorage
-5. Redux updates auth state
-6. User redirected to dashboard
-7. Protected routes check authentication status
 
 ## 🚢 Deployment
 
-### Firebase Hosting
-
-This project includes automatic deployment to Firebase Hosting:
+The project is configured for Firebase Hosting:
 
 ```bash
-# One-time setup
-npm install -g firebase-tools
-firebase login
-firebase init hosting
-
-# Deploy
-npm run deploy
-```
-
-### Manual Build & Deploy
-
-```bash
-# Build for production
+# Build and deploy
 npm run build
-
-# The dist/ folder contains the production build
-# Deploy to your hosting provider of choice
-```
-
-## 🧪 Testing
-
-Mock API endpoints simulate real backend behavior:
-- **Login:** Validates credentials against mock user database
-- **Dashboard Data:** Returns mock statistics and chart data
-- **User Profile:** Retrieves user information from localStorage
-
-## 📝 Environment Variables
-
-Create a `.env` file based on `.env.example`:
-
-```env
-VITE_API_BASE_URL=http://localhost:3000/api
-VITE_APP_NAME=Dashboard
-VITE_APP_VERSION=1.0.0
+firebase deploy
 ```
 
 ## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -256,13 +284,4 @@ This project is licensed under the MIT License.
 - Email: johnpokam95@gmail.com
 - GitHub: [@JohnnyPoks](https://github.com/JohnnyPoks)
 
-## 🙏 Acknowledgments
-
-- Design inspiration from Tobler Admin Template
-- Built as part of a technical assessment for MavenCode LLC
-- Icons by Heroicons
-- Charts by Recharts
-
 ---
-
-**⭐ If you find this project useful, please consider giving it a star!**

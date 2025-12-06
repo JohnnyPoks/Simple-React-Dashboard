@@ -8,7 +8,7 @@ const initialState: types.DashboardState = {
 
 export const dashboardReducer = (
   state = initialState,
-  action: any
+  action: { type: string; payload?: unknown }
 ): types.DashboardState => {
   switch (action.type) {
     case types.FETCH_DASHBOARD_DATA_REQUEST:
@@ -21,7 +21,7 @@ export const dashboardReducer = (
     case types.FETCH_DASHBOARD_DATA_SUCCESS:
       return {
         ...state,
-        data: action.payload,
+        data: action.payload as types.DashboardData,
         loading: false,
         error: null,
       };
@@ -30,7 +30,7 @@ export const dashboardReducer = (
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload as string,
       };
 
     default:
