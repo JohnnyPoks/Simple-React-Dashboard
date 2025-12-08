@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +30,7 @@ import {
   Settings,
   Zap,
   Play,
+  Monitor,
 } from 'lucide-react';
 import { toast } from '@/utils/toast';
 
@@ -108,6 +109,21 @@ const quickStartSteps = [
 
 export function HelpModal({ open, onOpenChange }: HelpModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Check if device is desktop (for showing keyboard shortcuts)
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      const isLargeScreen = window.innerWidth >= 1024;
+      const hasHover = window.matchMedia('(hover: hover)').matches;
+      const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+      setIsDesktop(isLargeScreen && (hasHover || !hasCoarsePointer));
+    };
+
+    checkIsDesktop();
+    window.addEventListener('resize', checkIsDesktop);
+    return () => window.removeEventListener('resize', checkIsDesktop);
+  }, []);
 
   const filteredFaq = faqItems.filter(
     item =>
@@ -145,7 +161,7 @@ export function HelpModal({ open, onOpenChange }: HelpModalProps) {
         </div>
 
         <Tabs defaultValue="quickstart" className="mt-2">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className={`grid w-full ${isDesktop ? 'grid-cols-4' : 'grid-cols-3'}`}>
             <TabsTrigger value="quickstart" className="gap-1">
               <Zap className="h-4 w-4" />
               <span className="hidden sm:inline">Quick Start</span>
@@ -154,10 +170,12 @@ export function HelpModal({ open, onOpenChange }: HelpModalProps) {
               <HelpCircle className="h-4 w-4" />
               <span className="hidden sm:inline">FAQ</span>
             </TabsTrigger>
-            <TabsTrigger value="shortcuts" className="gap-1">
-              <Keyboard className="h-4 w-4" />
-              <span className="hidden sm:inline">Shortcuts</span>
-            </TabsTrigger>
+            {isDesktop && (
+              <TabsTrigger value="shortcuts" className="gap-1">
+                <Keyboard className="h-4 w-4" />
+                <span className="hidden sm:inline">Shortcuts</span>
+              </TabsTrigger>
+            )}
             <TabsTrigger value="guides" className="gap-1">
               <BookOpen className="h-4 w-4" />
               <span className="hidden sm:inline">Guides</span>
@@ -236,33 +254,41 @@ export function HelpModal({ open, onOpenChange }: HelpModalProps) {
             </ScrollArea>
           </TabsContent>
 
-          {/* Keyboard Shortcuts */}
-          <TabsContent value="shortcuts">
-            <ScrollArea className="h-[400px] pr-4">
-              <div className="space-y-2 py-4">
-                {keyboardShortcuts.map((shortcut, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50"
-                  >
-                    <span className="text-muted-foreground">{shortcut.description}</span>
-                    <div className="flex gap-1">
-                      {shortcut.keys.map((key, i) => (
-                        <span key={i}>
-                          <kbd className="px-2 py-1 text-xs font-semibold bg-muted border rounded">
-                            {key}
-                          </kbd>
-                          {i < shortcut.keys.length - 1 && (
-                            <span className="mx-1 text-muted-foreground">+</span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
+          {/* Keyboard Shortcuts - Desktop Only */}
+          {isDesktop && (
+            <TabsContent value="shortcuts">
+              <ScrollArea className="h-[400px] pr-4">
+                <div className="py-4">
+                  <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
+                    <Monitor className="h-4 w-4" />
+                    These shortcuts work on desktop devices only
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </TabsContent>
+                  <div className="space-y-2">
+                    {keyboardShortcuts.map((shortcut, index) => (
+                      <div 
+                        key={index}
+                        className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50"
+                      >
+                        <span className="text-muted-foreground">{shortcut.description}</span>
+                        <div className="flex gap-1">
+                          {shortcut.keys.map((key, i) => (
+                            <span key={i}>
+                              <kbd className="px-2 py-1 text-xs font-semibold bg-muted border rounded">
+                                {key}
+                              </kbd>
+                              {i < shortcut.keys.length - 1 && (
+                                <span className="mx-1 text-muted-foreground">+</span>
+                              )}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          )}
 
           {/* Guides */}
           <TabsContent value="guides">

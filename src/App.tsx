@@ -17,9 +17,13 @@ import SettingsPage from "./pages/SettingsPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import HelpPage from "./pages/HelpPage";
 import ContactPage from "./pages/ContactPage";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 
 // Layout wrapper component with top navbar
 const DashboardLayout = () => {
+  // Initialize keyboard shortcuts for the entire dashboard
+  useKeyboardShortcuts();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navbar */}

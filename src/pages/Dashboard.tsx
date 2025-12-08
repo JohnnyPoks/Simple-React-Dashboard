@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDashboardDataRequest,
@@ -60,11 +60,36 @@ const Dashboard = () => {
 
   const [botRunning, setBotRunning] = useState(true);
 
+  // Handle bot toggle from keyboard shortcut
+  const handleBotToggle = useCallback(() => {
+    setBotRunning(prev => {
+      const newState = !prev;
+      if (newState) {
+        toast.botStarted();
+      } else {
+        toast.botStopped();
+      }
+      return newState;
+    });
+  }, []);
+
   useEffect(() => {
     dispatch(fetchDashboardDataRequest());
     dispatch(fetchSignalsRequest());
     dispatch(fetchTradesRequest());
   }, [dispatch]);
+
+  // Listen for keyboard shortcut bot toggle event
+  useEffect(() => {
+    const handleToggleBotEvent = () => {
+      handleBotToggle();
+    };
+
+    window.addEventListener('toggleBot', handleToggleBotEvent);
+    return () => {
+      window.removeEventListener('toggleBot', handleToggleBotEvent);
+    };
+  }, [handleBotToggle]);
 
   if (loading) {
     return <TradingDashboardSkeleton />;

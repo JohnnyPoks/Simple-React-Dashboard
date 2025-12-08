@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   Card,
@@ -32,6 +32,7 @@ import {
   FileText,
   Mail,
   Clock,
+  Monitor,
 } from "lucide-react";
 import { toast } from "@/utils/toast";
 import ChatModal from "@/components/ChatModal";
@@ -160,6 +161,24 @@ const HelpPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Check if device is desktop (for showing keyboard shortcuts)
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      // Check screen width and pointer type
+      const isLargeScreen = window.innerWidth >= 1024;
+      const hasHover = window.matchMedia("(hover: hover)").matches;
+      const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+      // Desktop: large screen AND (has hover OR no coarse pointer)
+      setIsDesktop(isLargeScreen && (hasHover || !hasCoarsePointer));
+    };
+
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+    return () => window.removeEventListener("resize", checkIsDesktop);
+  }, []);
 
   const filteredFaq = faqItems
     .map((category) => ({
@@ -228,24 +247,25 @@ const HelpPage = () => {
         </CardContent>
       </Card>
 
-      {/* Search */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="relative max-w-xl mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              placeholder="Search for help topics, guides, or FAQs..."
-              className="pl-12 h-12 text-lg"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* FAQ Section */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Search */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="relative max-w-xl mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  placeholder="Search for help topics, guides, or FAQs..."
+                  className="pl-12 h-12 text-lg"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* FAQ Items */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -298,38 +318,44 @@ const HelpPage = () => {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Keyboard Shortcuts */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Keyboard className="h-4 w-4" />
-                Keyboard Shortcuts
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {keyboardShortcuts.slice(0, 5).map((shortcut, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <span className="text-muted-foreground">
-                      {shortcut.description}
-                    </span>
-                    <div className="flex gap-1">
-                      {shortcut.keys.map((key, i) => (
-                        <span key={i}>
-                          <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-muted border rounded">
-                            {key}
-                          </kbd>
-                        </span>
-                      ))}
+          {/* Keyboard Shortcuts - Desktop Only */}
+          {isDesktop && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Keyboard className="h-4 w-4" />
+                  Keyboard Shortcuts
+                </CardTitle>
+                <CardDescription className="text-xs flex items-center gap-1">
+                  <Monitor className="h-3 w-3" />
+                  Desktop only
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {keyboardShortcuts.map((shortcut, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <span className="text-muted-foreground">
+                        {shortcut.description}
+                      </span>
+                      <div className="flex gap-1">
+                        {shortcut.keys.map((key, i) => (
+                          <span key={i}>
+                            <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-muted border rounded">
+                              {key}
+                            </kbd>
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Resources */}
           <Card>
